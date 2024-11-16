@@ -4,33 +4,59 @@ import { removeItem, updateQuantity } from './CartSlice';
 import './CartItem.css';
 
 const CartItem = ({ onContinueShopping }) => {
-  const cart = useSelector(state => state.cart.items);
-  const dispatch = useDispatch();
+    const cart = useSelector(state => state.cart.items);
+    const dispatch = useDispatch();
 
-  // Calculate total amount for all products in the cart
-  const calculateTotalAmount = () => {
- 
-  };
+    // Calculate total amount for all products in the cart
+    const calculateTotalAmount = () => {
+        const totalAmount = cart.reduce((total, item) => total + item.cost * item.quantity, 0);
+        return totalAmount;
+    };
 
-  const handleContinueShopping = (e) => {
-   
-  };
+    const handleContinueShopping = (e) => {
+        e.preventDefault();
+        onContinueShopping();
+    };
 
+    const handleCheckoutShopping = (e) => {
+        alert('Functionality to be added for future reference');
+    };
 
+    const handleIncrement = (item) => {
+        const itemToIncrease = cart.items.find(cartItem => cartItem.name === item.name);
+        if (itemToIncrease) {
+            itemToIncrease.quantity += 1;
+        }
+        dispatch(updateQuantity(itemToIncrease));
+    };
 
-  const handleIncrement = (item) => {
-  };
+    const handleDecrement = (item) => {
+        const itemToDecrease = cart.items.find(cartItem => cartItem.name === item.name);
+        if (itemToDecrease && itemToDecrease.quantity > 0) {
+            itemToDecrease.quantity -= 1;
+            dispatch(updateQuantity(itemToDecrease));
+        } else {
+            dispatch(removeItem(itemToDecrease));
+        }
+    };
 
-  const handleDecrement = (item) => {
-   
-  };
+    const handleRemove = (item) => {
+        const itemToRemove = cart.items.find(cartItem => cartItem.name === item.name);
+        if (itemToRemove) {
+            dispatch(removeItem(itemToRemove));
+        };
+    };
 
-  const handleRemove = (item) => {
-  };
-
-  // Calculate total cost based on quantity for an item
-  const calculateTotalCost = (item) => {
-  };
+    // Calculate total cost based on quantity for an item
+    const calculateTotalCost = (item) => {
+        const itemToCalculate = cart.items.find(cartItem => cartItem.name === item.name);
+        if (itemToCalculate && itemToCalculate.quantity > 0) {
+            itemCost = itemToCalculate.cost * itemToCalculate.quantity;
+            return itemCost;
+        } else {
+            return 0;
+        }
+    };
 
   return (
     <div className="cart-container">
