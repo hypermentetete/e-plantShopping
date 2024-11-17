@@ -6,6 +6,7 @@ import './CartItem.css';
 const CartItem = ({ onContinueShopping }) => {
     const cart = useSelector(state => state.cart.items);
     const dispatch = useDispatch();
+    console.log("cart", cart[0]);
 
     // Calculate total amount for all products in the cart
     const calculateTotalAmount = () => {
@@ -23,7 +24,7 @@ const CartItem = ({ onContinueShopping }) => {
     };
 
     const handleIncrement = (item) => {
-        const itemToIncrease = cart.items.find(cartItem => cartItem.name === item.name);
+        const itemToIncrease = cart.find(cartItem => cartItem.name === item.name);
         if (itemToIncrease) {
             itemToIncrease.quantity += 1;
         }
@@ -31,7 +32,7 @@ const CartItem = ({ onContinueShopping }) => {
     };
 
     const handleDecrement = (item) => {
-        const itemToDecrease = cart.items.find(cartItem => cartItem.name === item.name);
+        const itemToDecrease = cart.find(cartItem => cartItem.name === item.name);
         if (itemToDecrease && itemToDecrease.quantity > 0) {
             itemToDecrease.quantity -= 1;
             dispatch(updateQuantity(itemToDecrease));
@@ -41,7 +42,7 @@ const CartItem = ({ onContinueShopping }) => {
     };
 
     const handleRemove = (item) => {
-        const itemToRemove = cart.items.find(cartItem => cartItem.name === item.name);
+        const itemToRemove = cart.find(cartItem => cartItem.name === item.name);
         if (itemToRemove) {
             dispatch(removeItem(itemToRemove));
         };
@@ -49,9 +50,9 @@ const CartItem = ({ onContinueShopping }) => {
 
     // Calculate total cost based on quantity for an item
     const calculateTotalCost = (item) => {
-        const itemToCalculate = cart.items.find(cartItem => cartItem.name === item.name);
+        const itemToCalculate = cart.find(cartItem => cartItem.name === item.name);
         if (itemToCalculate && itemToCalculate.quantity > 0) {
-            itemCost = itemToCalculate.cost * itemToCalculate.quantity;
+            const itemCost = itemToCalculate.cost * itemToCalculate.quantity;
             return itemCost;
         } else {
             return 0;
