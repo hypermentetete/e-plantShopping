@@ -26,16 +26,14 @@ const CartItem = ({ onContinueShopping }) => {
     const handleIncrement = (item) => {
         const itemToIncrease = cart.find(cartItem => cartItem.name === item.name);
         if (itemToIncrease) {
-            itemToIncrease.quantity += 1;
+            dispatch(updateQuantity({name: itemToIncrease.name, quantity: itemToIncrease.quantity + 1}));
         }
-        dispatch(updateQuantity(itemToIncrease));
     };
 
     const handleDecrement = (item) => {
         const itemToDecrease = cart.find(cartItem => cartItem.name === item.name);
-        if (itemToDecrease && itemToDecrease.quantity > 0) {
-            itemToDecrease.quantity -= 1;
-            dispatch(updateQuantity(itemToDecrease));
+        if (itemToDecrease && itemToDecrease.quantity > 1) {
+            dispatch(updateQuantity({name: itemToDecrease.name, quantity: itemToDecrease.quantity - 1}));
         } else {
             dispatch(removeItem(itemToDecrease));
         }
@@ -68,7 +66,7 @@ const CartItem = ({ onContinueShopping }) => {
             <img className="cart-item-image" src={item.image} alt={item.name} />
             <div className="cart-item-details">
               <div className="cart-item-name">{item.name}</div>
-              <div className="cart-item-cost">{item.cost}</div>
+              <div className="cart-item-cost">${item.cost}</div>
               <div className="cart-item-quantity">
                 <button className="cart-item-button cart-item-button-dec" onClick={() => handleDecrement(item)}>-</button>
                 <span className="cart-item-quantity-value">{item.quantity}</span>
